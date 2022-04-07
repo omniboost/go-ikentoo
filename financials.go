@@ -122,6 +122,7 @@ type FinancialsGetResponseBody struct {
 	BusinessLocationID int64  `json:"businessLocationId"`
 	Sales              Sales  `json:"sales"`
 	DataComplete       bool   `json:"dataComplete"`
+	NextPageToken      string `json:"nextPageToken"`
 	Links              Links  `json:"_links"`
 }
 
@@ -146,4 +147,25 @@ func (r *FinancialsGetRequest) Do() (FinancialsGetResponseBody, error) {
 	responseBody := r.NewResponseBody()
 	_, err = r.client.Do(req, responseBody)
 	return *responseBody, err
+}
+
+func (r *FinancialsGetRequest) All() (FinancialsGetResponseBody, error) {
+	resp, err := r.Do()
+	if err != nil {
+		return resp, err
+	}
+
+	concat := resp
+
+	for resp.Links.NextPage.Href != "" {
+		r.QueryParams().NextPageToken = resp.NextPageToken
+		resp, err = r.Do()
+		if err != nil {
+			return resp, err
+		}
+
+		concat.Sales = append(concat.Sales, resp.Sales...)
+	}
+
+	return concat, nil
 }

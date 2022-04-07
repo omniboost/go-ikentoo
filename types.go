@@ -16,6 +16,9 @@ type Links struct {
 		Href      string `json:"href"`
 		Templated bool   `json:"templated"`
 	} `json:"self"`
+	NextPage struct {
+		Href string `json:"href"`
+	} `json:"nextPage"`
 }
 
 type BusinessList []Business
