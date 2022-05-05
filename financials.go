@@ -73,8 +73,8 @@ type FinancialsGetRequestPathParams struct {
 func (p *FinancialsGetRequestPathParams) Params() map[string]string {
 	return map[string]string{
 		"business_id": strconv.Itoa(p.BusinessID),
-		"from":        p.From.Format("2006-01-02T15:04:05+07:00"),
-		"to":          p.To.Format("2006-01-02T15:04:05+07:00"),
+		"from":        p.From.Format(time.RFC3339),
+		"to":          p.To.Format(time.RFC3339),
 	}
 }
 
