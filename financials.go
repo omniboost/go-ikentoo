@@ -165,6 +165,9 @@ func (r *FinancialsGetRequest) All() (FinancialsGetResponseBody, error) {
 		}
 
 		concat.Sales = append(concat.Sales, resp.Sales...)
+
+		// reset NextPageToken because request object can be reused
+		r.QueryParams().NextPageToken = ""
 	}
 
 	return concat, nil
