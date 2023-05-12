@@ -352,26 +352,32 @@ func CheckResponse(r *http.Response) error {
 }
 
 // {
-//   "ErrorType": "AccountViewError",
-//   "ErrorNumbers": null,
-//   "ErrorMessage": ""
+//   "timestamp": "2023-05-12T13:29:05.028+0000",
+//   "status": 404,
+//   "error": "Not Found",
+//   "exception": "com.ikentoo.financial.service.exceptions.ResourceNotFoundException",
+//   "message": "Business Location Not found for 12345",
+//   "path": "/f/finance/12345/financials/2023-05-10T09:00:00+02:00/2023-05-12T09:00:00+02:00"
 // }
 
 type ErrorResponse struct {
 	// HTTP response that caused this error
 	Response *http.Response
 
-	Type    string      `json:"ErrorType"`
-	Numbers interface{} `json:"ErrorNumbers"`
-	Message string      `json:"ErrorMessage"`
+	// Timestamp DateTime    `json:"timestamp"`
+	Status    int    `json:"status"`
+	Err       string `json:"error"`
+	Exception string `json:"exception"`
+	Message   string `json:"message"`
+	Path      string `json:"path"`
 }
 
 func (r *ErrorResponse) Error() string {
-	if r.Type == "" && r.Message == "" {
+	if r.Err == "" && r.Message == "" {
 		return ""
 	}
 
-	return fmt.Sprintf("%s: %s", r.Type, r.Message)
+	return fmt.Sprintf("%s (%d): %s", r.Err, r.Status, r.Message)
 }
 
 func checkContentType(response *http.Response) error {
