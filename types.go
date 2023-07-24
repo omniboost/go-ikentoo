@@ -51,6 +51,7 @@ type Sale struct {
 		MenuListPrice            Number `json:"menuListPrice"`
 		UnitCostPrice            Number `json:"unitCostPrice"`
 		ServiceCharge            Number `json:"serviceCharge"`
+		ServiceChargeRate        Number `json:"serviceChargeRate"`
 		DiscountAmount           Number `json:"discountAmount"`
 		TaxAmount                Number `json:"taxAmount"`
 		DiscountType             string `json:"discountType"`
@@ -83,7 +84,7 @@ type Sale struct {
 		VoidReason   string    `json:"voidReason"`
 		ParentLineID string    `json:"parentLineId,omitempty"`
 	} `json:"salesLines"`
-	Payments Payments `json:"payments"`
+	Payments           Payments  `json:"payments"`
 	TimeOfOpening      time.Time `json:"timeOfOpening"`
 	TimeOfCloseAndPaid time.Time `json:"timeOfCloseAndPaid"`
 	TableName          string    `json:"tableName"`
