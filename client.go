@@ -15,6 +15,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/hashicorp/go-multierror"
 	"github.com/pkg/errors"
 )
 
@@ -253,13 +254,18 @@ func (c *Client) Do(req *http.Request, body interface{}) (*http.Response, error)
 	}
 
 	errResp := &ErrorResponse{Response: httpResp}
-	err = c.Unmarshal(httpResp.Body, body, errResp)
+	errsResp := &ErrorsResponse{Response: httpResp}
+	err = c.Unmarshal(httpResp.Body, body, errResp, errsResp)
 	if err != nil {
 		return httpResp, err
 	}
 
 	if errResp.Error() != "" {
 		return httpResp, errResp
+	}
+
+	if errsResp.Error() != "" {
+		return httpResp, errsResp
 	}
 
 	return httpResp, nil
@@ -380,6 +386,40 @@ func (r *ErrorResponse) Error() string {
 	return fmt.Sprintf("%s (%d): %s", r.Err, r.Status, r.Message)
 }
 
+// {
+//   "errors": [
+//     {
+//       "code": "unauthorized",
+//       "title": "Full authentication is required to access this resource"
+//     }
+//   ]
+// }
+
+type ErrorsResponse struct {
+	// HTTP response that caused this error
+	Response *http.Response
+
+	// Timestamp DateTime    `json:"timestamp"`
+	Errors []struct {
+		Code       string `json:"code"`
+		Title string `json:"title"`
+	}
+}
+
+func (r *ErrorsResponse) Error() string {
+	if len(r.Errors) == 0 {
+		return ""
+	}
+
+	var errs *multierror.Error
+	for _, e := range r.Errors {
+		m := fmt.Sprintf("%s: %s", e.Code, e.Title)
+		errs = multierror.Append(errs, errors.New(m))
+	}
+
+	return errs.Error()
+
+}
 func checkContentType(response *http.Response) error {
 	header := response.Header.Get("Content-Type")
 	contentType := strings.Split(header, ";")[0]
