@@ -45,28 +45,29 @@ type Sale struct {
 		PreviousAccountID string `json:"previousAccountId"`
 	} `json:"source,omitempty"`
 	SalesLines []struct {
-		ID                       string `json:"id"`
-		TotalNetAmountWithTax    Number `json:"totalNetAmountWithTax"`
-		TotalNetAmountWithoutTax Number `json:"totalNetAmountWithoutTax"`
-		MenuListPrice            Number `json:"menuListPrice"`
-		UnitCostPrice            Number `json:"unitCostPrice"`
-		ServiceCharge            Number `json:"serviceCharge"`
-		ServiceChargeRate        Number `json:"serviceChargeRate"`
-		DiscountAmount           Number `json:"discountAmount"`
-		TaxAmount                Number `json:"taxAmount"`
-		DiscountType             string `json:"discountType"`
-		DiscountCode             string `json:"discountCode"`
-		DiscountName             string `json:"discountName"`
-		AccountDiscountAmount    Number `json:"accountDiscountAmount"`
-		TotalDiscountAmount      Number `json:"totalDiscountAmount"`
-		AccountDiscountType      string `json:"accountDiscountType"`
-		AccountDiscountCode      string `json:"accountDiscountCode"`
-		AccountDiscountName      string `json:"accountDiscountName"`
-		Sku                      string `json:"sku"`
-		Name                     string `json:"name"`
-		StatisticGroup           string `json:"statisticGroup"`
-		Quantity                 Number `json:"quantity"`
-		TaxRatePercentage        Number `json:"taxRatePercentage"`
+		ID                       string   `json:"id"`
+		TotalNetAmountWithTax    Number   `json:"totalNetAmountWithTax"`
+		TotalNetAmountWithoutTax Number   `json:"totalNetAmountWithoutTax"`
+		MenuListPrice            Number   `json:"menuListPrice"`
+		UnitCostPrice            Number   `json:"unitCostPrice"`
+		ServiceCharge            Number   `json:"serviceCharge"`
+		ServiceChargeRate        Number   `json:"serviceChargeRate"`
+		DiscountAmount           Number   `json:"discountAmount"`
+		TaxAmount                Number   `json:"taxAmount"`
+		DiscountType             string   `json:"discountType"`
+		DiscountCode             string   `json:"discountCode"`
+		DiscountName             string   `json:"discountName"`
+		AccountDiscountAmount    Number   `json:"accountDiscountAmount"`
+		TotalDiscountAmount      Number   `json:"totalDiscountAmount"`
+		AccountDiscountType      string   `json:"accountDiscountType"`
+		AccountDiscountCode      string   `json:"accountDiscountCode"`
+		AccountDiscountName      string   `json:"accountDiscountName"`
+		Sku                      string   `json:"sku"`
+		Name                     string   `json:"name"`
+		StatisticGroup           string   `json:"statisticGroup"`
+		Quantity                 Number   `json:"quantity"`
+		TaxRatePercentage        Number   `json:"taxRatePercentage"`
+		TaxLines                 TaxLines `json:"taxLines"`
 		AccountingGroup          struct {
 			AccountingGroupID int64  `json:"accountingGroupId"`
 			Name              string `json:"name"`
@@ -139,4 +140,14 @@ type Payment struct {
 	Type             string `json:"type"`
 	DeviceID         int    `json:"deviceId"`
 	DeviceName       string `json:"deviceName"`
+}
+
+type TaxLines []TaxLine
+
+type TaxLine struct {
+	TaxID       string `json:"taxId"`
+	TaxCode     string `json:"taxCode"`
+	TaxRate     string `json:"taxRate"`
+	TaxAmount   string `json:"taxAmount"`
+	TaxIncluded bool   `json:"taxIncluded"`
 }
