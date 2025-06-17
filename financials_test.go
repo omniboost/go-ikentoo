@@ -1,6 +1,7 @@
 package ikentoo_test
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"testing"
@@ -14,7 +15,7 @@ func TestFinancialsGet(t *testing.T) {
 	req.PathParams().To = time.Now().AddDate(0, 0, -0)
 	req.QueryParams().Include = append(req.QueryParams().Include, "payments")
 	req.QueryParams().Include = append(req.QueryParams().Include, "payment")
-	resp, err := req.Do()
+	resp, err := req.Do(context.Background())
 	if err != nil {
 		t.Error(err)
 	}
