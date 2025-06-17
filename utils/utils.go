@@ -17,12 +17,12 @@ var (
 	// register custom encoders
 	EncodeSchemaMarshaler = func(v reflect.Value) string {
 		marshaler, ok := v.Interface().(SchemaMarshaler)
-		if ok == true {
+		if ok {
 			return marshaler.MarshalSchema()
 		}
 
 		stringer, ok := v.Interface().(fmt.Stringer)
-		if ok == true {
+		if ok {
 			return stringer.String()
 		}
 
@@ -43,7 +43,7 @@ func AddQueryParamsToRequest(requestParams interface{}, req *http.Request, skipE
 	params := url.Values{}
 
 	to, ok := requestParams.(ToURLValues)
-	if ok == true {
+	if ok {
 		params, err = to.ToURLValues()
 		if err != nil {
 			return err
@@ -78,7 +78,7 @@ func AddURLValuesToRequest(params url.Values, req *http.Request, skipEmpty bool)
 	req.URL.RawQuery = query.Encode()
 
 	// force $ in query parameters
-	req.URL.RawQuery = strings.Replace(req.URL.RawQuery, "%24", "$", -1)
+	req.URL.RawQuery = strings.ReplaceAll(req.URL.RawQuery, "%24", "$")
 	// req.URL.RawQuery = strings.Replace(req.URL.RawQuery, "+", "%20", -1)
 	return nil
 }

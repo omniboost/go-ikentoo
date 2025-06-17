@@ -1,6 +1,7 @@
 package ikentoo_test
 
 import (
+	"context"
 	"log"
 	"net/url"
 	"os"
@@ -59,7 +60,7 @@ func TestMain(m *testing.M) {
 	}
 
 	// get http client with automatic oauth logic
-	httpClient := oauthConfig.Client(oauth2.NoContext, token)
+	httpClient := oauthConfig.Client(context.Background(), token)
 
 	client = ikentoo.NewClient(httpClient)
 	if debug != "" {

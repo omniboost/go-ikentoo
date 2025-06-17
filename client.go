@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -208,7 +207,7 @@ func (c *Client) Do(req *http.Request, body interface{}) (*http.Response, error)
 		c.beforeRequestDo(c.http, req, body)
 	}
 
-	if c.debug == true {
+	if c.debug {
 		dump, _ := httputil.DumpRequestOut(req, true)
 		log.Println(string(dump))
 	}
@@ -229,7 +228,7 @@ func (c *Client) Do(req *http.Request, body interface{}) (*http.Response, error)
 		}
 	}()
 
-	if c.debug == true {
+	if c.debug {
 		dump, _ := httputil.DumpResponse(httpResp, true)
 		log.Println(string(dump))
 	}
@@ -276,7 +275,7 @@ func (c *Client) Unmarshal(r io.Reader, vv ...interface{}) error {
 		return nil
 	}
 
-	b, err := ioutil.ReadAll(r)
+	b, err := io.ReadAll(r)
 	if err != nil {
 		return err
 	}
@@ -327,8 +326,8 @@ func CheckResponse(r *http.Response) error {
 	}
 
 	// read data and copy it back
-	data, err := ioutil.ReadAll(r.Body)
-	r.Body = ioutil.NopCloser(bytes.NewReader(data))
+	data, err := io.ReadAll(r.Body)
+	r.Body = io.NopCloser(bytes.NewReader(data))
 	if err != nil {
 		return errorResponse
 	}
@@ -401,7 +400,7 @@ type ErrorsResponse struct {
 
 	// Timestamp DateTime    `json:"timestamp"`
 	Errors []struct {
-		Code       string `json:"code"`
+		Code  string `json:"code"`
 		Title string `json:"title"`
 	}
 }

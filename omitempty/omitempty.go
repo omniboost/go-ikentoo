@@ -18,7 +18,7 @@ func MarshalJSON(obj interface{}) ([]byte, error) {
 		fs = append(fs, st.Field(i))
 	}
 
-	for i, _ := range fs {
+	for i := range fs {
 		if !fieldHasOmitEmpty(fs[i], "json") {
 			continue
 		}
@@ -56,7 +56,7 @@ func MarshalXML(obj interface{}, e *xml.Encoder, start xml.StartElement) error {
 		fs = append(fs, f)
 	}
 
-	for i, _ := range fs {
+	for i := range fs {
 		if !fieldHasOmitEmpty(fs[i], "xml") {
 			continue
 		}
