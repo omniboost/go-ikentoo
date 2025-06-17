@@ -1,6 +1,7 @@
 package ikentoo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -36,9 +37,10 @@ func (r FinancialsGetRequest) NewQueryParams() *FinancialsGetRequestQueryParams 
 }
 
 type FinancialsGetRequestQueryParams struct {
-	Include       Includes `schema:"include,omitempty"`
-	PageSize      int      `schema:"pageSize,omitempty"`
-	NextPageToken string   `schema:"nextPageToken,omitempty"`
+	Include          Includes `schema:"include,omitempty"`
+	IncludeConsumers bool     `schema:"includeConsumers,omitempty"`
+	PageSize         int      `schema:"pageSize,omitempty"`
+	NextPageToken    string   `schema:"nextPageToken,omitempty"`
 }
 
 func (p FinancialsGetRequestQueryParams) ToURLValues() (url.Values, error) {
@@ -131,9 +133,9 @@ func (r *FinancialsGetRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *FinancialsGetRequest) Do() (FinancialsGetResponseBody, error) {
+func (r *FinancialsGetRequest) Do(ctx context.Context) (FinancialsGetResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
@@ -149,8 +151,8 @@ func (r *FinancialsGetRequest) Do() (FinancialsGetResponseBody, error) {
 	return *responseBody, err
 }
 
-func (r *FinancialsGetRequest) All() (FinancialsGetResponseBody, error) {
-	resp, err := r.Do()
+func (r *FinancialsGetRequest) All(ctx context.Context) (FinancialsGetResponseBody, error) {
+	resp, err := r.Do(ctx)
 	if err != nil {
 		return resp, err
 	}
@@ -159,7 +161,7 @@ func (r *FinancialsGetRequest) All() (FinancialsGetResponseBody, error) {
 
 	for resp.Links.NextPage.Href != "" {
 		r.QueryParams().NextPageToken = resp.NextPageToken
-		resp, err = r.Do()
+		resp, err = r.Do(ctx)
 		if err != nil {
 			return resp, err
 		}

@@ -1,6 +1,7 @@
 package ikentoo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -129,9 +130,9 @@ func (r *AccountingGroupsGetRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *AccountingGroupsGetRequest) Do() (AccountingGroupsGetResponseBody, error) {
+func (r *AccountingGroupsGetRequest) Do(ctx context.Context) (AccountingGroupsGetResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}

@@ -1,6 +1,7 @@
 package ikentoo
 
 import (
+	"context"
 	"net/http"
 	"net/url"
 
@@ -115,9 +116,9 @@ func (r *BusinessesGetRequest) URL() *url.URL {
 	return &u
 }
 
-func (r *BusinessesGetRequest) Do() (BusinessesGetResponseBody, error) {
+func (r *BusinessesGetRequest) Do(ctx context.Context) (BusinessesGetResponseBody, error) {
 	// Create http request
-	req, err := r.client.NewRequest(nil, r)
+	req, err := r.client.NewRequest(ctx, r)
 	if err != nil {
 		return *r.NewResponseBody(), err
 	}
