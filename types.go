@@ -191,7 +191,7 @@ type TaxLines []TaxLine
 type TaxLine struct {
 	TaxID       string `json:"taxId"`
 	TaxCode     string `json:"taxCode"`
-	TaxRate     string `json:"taxRate"`
-	TaxAmount   string `json:"taxAmount"`
+	TaxRate     Number `json:"taxRate"`
+	TaxAmount   Number `json:"taxAmount"`
 	TaxIncluded bool   `json:"taxIncluded"`
 }
