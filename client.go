@@ -332,13 +332,13 @@ func CheckResponse(r *http.Response) error {
 		return errorResponse
 	}
 
+	if r.ContentLength == 0 {
+		return fmt.Errorf("response body is empty, status: %s", r.Status)
+	}
+
 	err = checkContentType(r)
 	if err != nil {
 		return errors.WithStack(err)
-	}
-
-	if r.ContentLength == 0 {
-		return errors.New("response body is empty")
 	}
 
 	// convert json to struct
